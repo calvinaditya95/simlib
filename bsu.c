@@ -194,7 +194,7 @@ main ()				/* Main function. */
     case 2: infile = fopen ("aii.in", "r"); break;
     case 7: infile = fopen ("c.in","r"); break;
   }
-
+  
   outfile = fopen ("bsu.out", "w");
 
   /* Read input parameters. */
