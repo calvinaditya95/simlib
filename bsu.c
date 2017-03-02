@@ -185,8 +185,8 @@ main ()				/* Main function. */
 {
   /* Open input and output files. */
 
-  infile = fopen ("bsu.in", "r");
-  outfile = fopen ("bsu.out", "w");
+  infile = fopen ("bsubiii.in", "r");
+  outfile = fopen ("bsubiii.out", "w");
 
   /* Read input parameters. */
 

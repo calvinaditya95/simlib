@@ -1,0 +1,58 @@
+BSU Cafeteria Model
+
+Number of work stations                    4
+
+Number of machines in each station         1    1 9999    2
+
+Number of job types                        3
+
+Number of tasks for each job type          3    3    2
+
+Distribution function of job types     0.800   0.950   1.000
+
+Mean interarrival time of jobs         30.00 seconds
+
+Length of the simulation              5400.0 seconds
+
+
+Job type     Work stations on route
+
+   1            1    3    4
+
+   2            2    3    4
+
+   3            3    4
+
+
+Job type     Min service time (in seconds) for successive tasks
+
+   1        50.00     5.00    25.00
+
+   2        30.00     5.00    10.00
+
+   3         5.00     5.00
+
+
+
+Job type     Average total delay in queue
+
+   1                   2238.800
+
+   2                     93.782
+
+   3                      0.491
+
+Overall average job total delay =  1805.132
+
+
+
+ Work      Average number      Average       Average delay
+station       in queue       utilization        in queue
+
+   1          143.520            0.995         2216.521
+
+   2            1.146            0.725           93.724
+
+   3            0.000            0.000            0.000
+
+   4            0.003            0.350            0.104
