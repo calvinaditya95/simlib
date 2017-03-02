@@ -184,8 +184,17 @@ int
 main ()				/* Main function. */
 {
   /* Open input and output files. */
+  int case_number;
+  printf("Input case number:\n");
+  scanf("%d", &case_number);
 
-  infile = fopen ("bsu.in", "r");
+  switch(case_number) {
+    case 0: infile = fopen ("base.in", "r"); break;
+    case 1: infile = fopen ("ai.in", "r"); break;
+    case 2: infile = fopen ("aii.in", "r"); break;
+    case 7: infile = fopen ("c.in","r"); break;
+  }
+
   outfile = fopen ("bsu.out", "w");
 
   /* Read input parameters. */
@@ -240,7 +249,6 @@ main ()				/* Main function. */
     }
 
   /* Initialize all machines in all stations to the idle state. */
-
   for (j = 1; j <= num_stations; ++j)
     num_machines_busy[j] = 0;
 
@@ -250,7 +258,7 @@ main ()				/* Main function. */
 
   /* Set maxatr = max(maximum number of attributes per record, 4) */
 
-  maxatr = 5;			/* NEVER SET maxatr TO BE SMALLER THAN 4. */
+  maxatr = 5;     /* NEVER SET maxatr TO BE SMALLER THAN 4. */
 
   /* Schedule the arrival of the first job. */
 
@@ -274,17 +282,18 @@ main ()				/* Main function. */
       /* Invoke the appropriate event function. */
 
       switch (next_event_type)
-	{
-	case EVENT_ARRIVAL:
-	  arrive (1);
-	  break;
-	case EVENT_DEPARTURE:
-	  depart ();
-	  break;
-	case EVENT_END_SIMULATION:
-	  report ();
-	  break;
-	}
+  {
+  case EVENT_ARRIVAL:
+    arrive (1);
+  printf("A\n");
+    break;
+  case EVENT_DEPARTURE:
+    depart ();
+    break;
+  case EVENT_END_SIMULATION:
+    report ();
+    break;
+  }
 
       /* If the event just executed was not the end-simulation event (type
          EVENT_END_SIMULATION), continue simulating.  Otherwise, end the
