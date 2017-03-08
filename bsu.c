@@ -159,25 +159,49 @@ report (void)			/* Report generator function. */
   /* Compute the average total delay in queue for each job type and the
      overall average job total delay. */
 
-  fprintf (outfile, "\n\n\n\nJob type     Average total delay in queue");
+  fprintf (outfile, "\n\n\n\nRoute     Average total delay in queue     Maximum total delay in queue");
   overall_avg_job_tot_delay = 0.0;
   sum_probs = 0.0;
   for (i = 1; i <= num_job_types; ++i)
     {
       avg_job_tot_delay = sampst (0.0, -(num_stations + i)) * num_tasks[i];
-      fprintf (outfile, "\n\n%4d%27.3f", i, avg_job_tot_delay);
+      fprintf (outfile, "\n\n%4d%24.3f%33.3f", i, avg_job_tot_delay, transfer[3]);
       overall_avg_job_tot_delay += (prob_distrib_job_type[i] - sum_probs) * avg_job_tot_delay;
       sum_probs = prob_distrib_job_type[i];
     }
-  fprintf (outfile, "\n\nOverall average job total delay =%10.3f\n", overall_avg_job_tot_delay);
+  // fprintf (outfile, "\n\nOverall average job total delay =%10.3f\n", overall_avg_job_tot_delay);
 
   /* Compute the average number in queue, the average utilization, and the
      average delay in queue for each station. */
 
-  fprintf (outfile, "\n\n\n Work      Average number      Average       Average delay");
-  fprintf (outfile, "\nstation       in queue       utilization        in queue");
-  for (j = 1; j <= num_stations; ++j)
-    fprintf (outfile, "\n\n%4d%17.3f%17.3f%17.3f", j, filest (j), timest (0.0, -j) / num_machines[j], sampst (0.0, -j));
+  fprintf (outfile, "\n\n\n\n Work      Average number    Maximum number   Average delay    Maximum delay");
+  fprintf (outfile, "\nstation       in queue          in queue        in queue         in queue");
+
+  double avg_num_customer = 0;
+  double max_num_customer = 0;
+  
+  for (j = 1; j <= num_stations; ++j) {
+    filest(j);
+    double avg_num_queue = transfer[1];
+    double max_num_queue = transfer[2];
+
+    if (max_num_queue < 0) {
+      max_num_queue = 0;
+    }
+
+    avg_num_customer += avg_num_queue;
+    max_num_customer += max_num_queue;
+
+    sampst(0.0, -j);
+    double avg_delay_queue = transfer[1];
+    double max_delay_queue = transfer[3];
+
+    fprintf (outfile, "\n\n%4d%17.3f%17.3f%18.3f%17.3f", j, avg_num_queue, max_num_queue, avg_delay_queue, max_delay_queue);
+  }
+
+  fprintf (outfile, "\n\nAverage number of customers in the entire system = %f\n", avg_num_customer);
+  fprintf(outfile, "Maximum number of customers in the entire system = %f\n", max_num_customer);
+    
 }
 
 int
@@ -189,13 +213,15 @@ main ()				/* Main function. */
   scanf("%d", &case_number);
 
   switch(case_number) {
-    case 0: infile = fopen ("base.in", "r"); break;
-    case 1: infile = fopen ("ai.in", "r"); break;
-    case 2: infile = fopen ("aii.in", "r"); break;
-    case 7: infile = fopen ("c.in","r"); break;
+    case 0: infile = fopen ("base.in", "r"); outfile = fopen ("report-base-case.out", "w"); break;
+    case 1: infile = fopen ("ai.in", "r"); outfile = fopen ("report-case-a-i.out", "w"); break;
+    case 2: infile = fopen ("aii.in", "r"); outfile = fopen ("report-case-a-ii.out", "w"); break;
+    case 3: infile = fopen ("aiii.in", "r"); outfile = fopen ("report-case-a-iii.out", "w"); break;
+    case 4: infile = fopen ("bi.in", "r"); outfile = fopen ("report-case-b-i.out", "w"); break;
+    case 5: infile = fopen ("bii.in", "r"); outfile = fopen ("report-case-b-ii.out", "w"); break;
+    case 6: infile = fopen ("biii.in", "r"); outfile = fopen ("report-case-b-iii.out", "w"); break;
+    case 7: infile = fopen ("c.in","r"); outfile = fopen ("report-case-c.out", "w"); break;
   }
-  
-  outfile = fopen ("bsu.out", "w");
 
   /* Read input parameters. */
 
@@ -220,33 +246,33 @@ main ()				/* Main function. */
 
   fprintf (outfile, "BSU Cafeteria Model\n\n");
   fprintf (outfile, "Number of work stations%21d\n\n", num_stations);
-  fprintf (outfile, "Number of machines in each station     ");
+  fprintf (outfile, "Number of employees in each station     ");
   for (j = 1; j <= num_stations; ++j)
     fprintf (outfile, "%5d", num_machines[j]);
-  fprintf (outfile, "\n\nNumber of job types%25d\n\n", num_job_types);
-  fprintf (outfile, "Number of tasks for each job type      ");
+  fprintf (outfile, "\n\nNumber of routes%25d\n\n", num_job_types);
+  fprintf (outfile, "Number of tasks for each route      ");
   for (i = 1; i <= num_job_types; ++i)
     fprintf (outfile, "%5d", num_tasks[i]);
-  fprintf (outfile, "\n\nDistribution function of job types  ");
+  fprintf (outfile, "\n\nDistribution function of routes  ");
   for (i = 1; i <= num_job_types; ++i)
     fprintf (outfile, "%8.3f", prob_distrib_job_type[i]);
   fprintf (outfile, "\n\nMean interarrival time of jobs%14.2f seconds\n\n", mean_interarrival);
   fprintf (outfile, "Length of the simulation%20.1f seconds\n\n\n", length_simulation);
-  fprintf (outfile, "Job type     Work stations on route");
+  fprintf (outfile, "Route     Work stations on route");
   for (i = 1; i <= num_job_types; ++i)
     {
       fprintf (outfile, "\n\n%4d        ", i);
       for (j = 1; j <= num_tasks[i]; ++j)
 	fprintf (outfile, "%5d", route[i][j]);
     }
-  fprintf (outfile, "\n\n\nJob type     ");
-  fprintf (outfile, "Min service time (in seconds) for successive tasks");
-  for (i = 1; i <= num_job_types; ++i)
-    {
-      fprintf (outfile, "\n\n%4d    ", i);
-      for (j = 1; j <= num_tasks[i]; ++j)
-	fprintf (outfile, "%9.2f", min_service[i][j]);
-    }
+ //  fprintf (outfile, "\n\n\nJob type     ");
+ //  fprintf (outfile, "Min service time (in seconds) for successive tasks");
+ //  for (i = 1; i <= num_job_types; ++i)
+ //    {
+ //      fprintf (outfile, "\n\n%4d    ", i);
+ //      for (j = 1; j <= num_tasks[i]; ++j)
+	// fprintf (outfile, "%9.2f", min_service[i][j]);
+ //    }
 
   /* Initialize all machines in all stations to the idle state. */
   for (j = 1; j <= num_stations; ++j)
@@ -285,7 +311,6 @@ main ()				/* Main function. */
   {
   case EVENT_ARRIVAL:
     arrive (1);
-  printf("A\n");
     break;
   case EVENT_DEPARTURE:
     depart ();
