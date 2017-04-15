@@ -159,13 +159,13 @@ report (void)			/* Report generator function. */
   /* Compute the average total delay in queue for each job type and the
      overall average job total delay. */
 
-  fprintf (outfile, "\n\n\n\nRoute     Average total delay in queue     Maximum total delay in queue");
+  printf ("\n\n\n\nRoute     Average total delay in queue     Maximum total delay in queue");
   overall_avg_job_tot_delay = 0.0;
   sum_probs = 0.0;
   for (i = 1; i <= num_job_types; ++i)
     {
       avg_job_tot_delay = sampst (0.0, -(num_stations + i)) * num_tasks[i];
-      fprintf (outfile, "\n\n%4d%24.3f%33.3f", i, avg_job_tot_delay, transfer[3]);
+      printf ("\n\n%4d%24.3f%33.3f", i, avg_job_tot_delay, transfer[3]);
       overall_avg_job_tot_delay += (prob_distrib_job_type[i] - sum_probs) * avg_job_tot_delay;
       sum_probs = prob_distrib_job_type[i];
     }
@@ -174,8 +174,8 @@ report (void)			/* Report generator function. */
   /* Compute the average number in queue, the average utilization, and the
      average delay in queue for each station. */
 
-  fprintf (outfile, "\n\n\n\n Work      Average number    Maximum number   Average delay    Maximum delay");
-  fprintf (outfile, "\nstation       in queue          in queue        in queue         in queue");
+  printf ("\n\n\n\n Work      Average number    Maximum number   Average delay    Maximum delay");
+  printf ("\nstation       in queue          in queue        in queue         in queue");
 
   double avg_num_customer = 0;
   double max_num_customer = 0;
@@ -196,11 +196,11 @@ report (void)			/* Report generator function. */
     double avg_delay_queue = transfer[1];
     double max_delay_queue = transfer[3];
 
-    fprintf (outfile, "\n\n%4d%17.3f%17.3f%18.3f%17.3f", j, avg_num_queue, max_num_queue, avg_delay_queue, max_delay_queue);
+    printf ("\n\n%4d%17.3f%17.3f%18.3f%17.3f", j, avg_num_queue, max_num_queue, avg_delay_queue, max_delay_queue);
   }
 
-  fprintf (outfile, "\n\nAverage number of customers in the entire system = %f\n", avg_num_customer);
-  fprintf(outfile, "Maximum number of customers in the entire system = %f\n", max_num_customer);
+  printf ("\n\nAverage number of customers in the entire system = %f\n", avg_num_customer);
+  printf("Maximum number of customers in the entire system = %f\n", max_num_customer);
     
 }
 
@@ -208,7 +208,6 @@ int
 main (int argc, char **argv)				/* Main function. */
 {
   /* Open input and output files. */
-
   switch(atoi(argv[1])) {
     case 0: infile = fopen ("base.in", "r"); outfile = fopen ("report-base-case.out", "w"); break;
     case 1: infile = fopen ("ai.in", "r"); outfile = fopen ("report-case-a-i.out", "w"); break;
@@ -241,26 +240,26 @@ main (int argc, char **argv)				/* Main function. */
 
   /* Write report heading and input parameters. */
 
-  fprintf (outfile, "BSU Cafeteria Model\n\n");
-  fprintf (outfile, "Number of work stations%21d\n\n", num_stations);
-  fprintf (outfile, "Number of employees in each station     ");
+  printf ("BSU Cafeteria Model\n\n");
+  printf ("Number of work stations%21d\n\n", num_stations);
+  printf ("Number of employees in each station     ");
   for (j = 1; j <= num_stations; ++j)
-    fprintf (outfile, "%5d", num_machines[j]);
-  fprintf (outfile, "\n\nNumber of routes%25d\n\n", num_job_types);
-  fprintf (outfile, "Number of tasks for each route      ");
+    printf ("%5d", num_machines[j]);
+  printf ("\n\nNumber of routes%25d\n\n", num_job_types);
+  printf ("Number of tasks for each route      ");
   for (i = 1; i <= num_job_types; ++i)
-    fprintf (outfile, "%5d", num_tasks[i]);
-  fprintf (outfile, "\n\nDistribution function of routes  ");
+    printf ("%5d", num_tasks[i]);
+  printf ("\n\nDistribution function of routes  ");
   for (i = 1; i <= num_job_types; ++i)
-    fprintf (outfile, "%8.3f", prob_distrib_job_type[i]);
-  fprintf (outfile, "\n\nMean interarrival time of jobs%14.2f seconds\n\n", mean_interarrival);
-  fprintf (outfile, "Length of the simulation%20.1f seconds\n\n\n", length_simulation);
-  fprintf (outfile, "Route     Work stations on route");
+    printf ("%8.3f", prob_distrib_job_type[i]);
+  printf ("\n\nMean interarrival time of jobs%14.2f seconds\n\n", mean_interarrival);
+  printf ("Length of the simulation%20.1f seconds\n\n\n", length_simulation);
+  printf ("Route     Work stations on route");
   for (i = 1; i <= num_job_types; ++i)
     {
-      fprintf (outfile, "\n\n%4d        ", i);
+      printf ("\n\n%4d        ", i);
       for (j = 1; j <= num_tasks[i]; ++j)
-	fprintf (outfile, "%5d", route[i][j]);
+	printf ("%5d", route[i][j]);
     }
  //  fprintf (outfile, "\n\n\nJob type     ");
  //  fprintf (outfile, "Min service time (in seconds) for successive tasks");
@@ -325,7 +324,6 @@ main (int argc, char **argv)				/* Main function. */
   while (next_event_type != EVENT_END_SIMULATION);
 
   fclose (infile);
-  fclose (outfile);
-
+  fclose (outfile);  
   return 0;
 }
