@@ -205,14 +205,11 @@ report (void)			/* Report generator function. */
 }
 
 int
-main ()				/* Main function. */
+main (int argc, char **argv)				/* Main function. */
 {
   /* Open input and output files. */
-  int case_number;
-  printf("Input case number:\n");
-  scanf("%d", &case_number);
 
-  switch(case_number) {
+  switch(atoi(argv[1])) {
     case 0: infile = fopen ("base.in", "r"); outfile = fopen ("report-base-case.out", "w"); break;
     case 1: infile = fopen ("ai.in", "r"); outfile = fopen ("report-case-a-i.out", "w"); break;
     case 2: infile = fopen ("aii.in", "r"); outfile = fopen ("report-case-a-ii.out", "w"); break;
