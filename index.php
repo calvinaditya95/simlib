@@ -12,32 +12,38 @@
 		<hr>
 		<p>
 			<form method="post">
-				 Select case number:
-				 <br/>
-				 <br/>
-				 <select name="case">
-				 	<option value="0">0. Base case</option>
-				  	<option value="1">1. Case A-I</option>
-				  	<option value="2">2. Case A-II</option>
-				  	<option value="3">3. Case A-III</option>
-				  	<option value="4">4. Case B-I</option>
-				  	<option value="5">5. Case B-II</option>
-				  	<option value="6">6. Case B-III</option>
-				  	<option value="7">7. Case C</option>
-				</select>
-				<br/>
-				<br/>
-				<input type="submit" value="Run simulation">
+				<table>
+				<tr>
+					<td>Number of hot food employees:</td>
+					<td><input type="text" name="hotfood"></td>
+				</tr>
+				<tr>
+					<td>Number of specialty sandwich employees:</td>
+					<td><input type="text" name="sandwich"></td>
+				</tr>
+				<tr>
+					<td>Number of cashiers:</td>
+					<td><input type="text" name="cashier"></td>
+				</tr>
+				</table>
+				<br/><input type="submit" value="Run simulation">
 			</form>
 		</p>
 
 		<?php
-			if (isset($_POST['case'])) {
-				$case = $_POST['case'];
+			if (isset($_POST['hotfood']) && isset($_POST['sandwich']) && isset($_POST['cashier'])) {
+				$hotfood = $_POST['hotfood'];
+				$sandwich = $_POST['sandwich'];
+				$cashier = $_POST['cashier'];
 				echo '<hr>';
-				echo "Simulation result for case $case:<br/><br/>";
+				echo 'Simulation result for:<br/>';
+				echo '<ul>';
+				echo "<li>$hotfood hotfood employees</li>";
+				echo "<li>$sandwich specialty sandwich employees</li>";
+				echo "<li>$cashier cashiers</li>";
+				echo '</ul>';
 				echo '<pre>';
-				passthru("./bsu $case");
+				passthru("./bsu 0 $hotfood $sandwich $cashier");
 				echo '</pre>';
 			}
 		?>

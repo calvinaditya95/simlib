@@ -221,6 +221,7 @@ main (int argc, char **argv)				/* Main function. */
 
   /* Read input parameters. */
 
+  
   fscanf (infile, "%d %d %lg %lg", &num_stations, &num_job_types, &mean_interarrival, &length_simulation);
   for (j = 1; j <= num_stations; ++j)
     fscanf (infile, "%d", &num_machines[j]);
@@ -237,6 +238,11 @@ main (int argc, char **argv)				/* Main function. */
     }
   for (i = 1; i <= num_job_types; ++i)
     fscanf (infile, "%lg", &prob_distrib_job_type[i]);
+
+  /* Read from html form */
+  num_machines[1] = atoi(argv[2]);
+  num_machines[2] = atoi(argv[3]);
+  num_machines[4] = atoi(argv[4]);
 
   /* Write report heading and input parameters. */
 
