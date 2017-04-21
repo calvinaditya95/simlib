@@ -16,14 +16,14 @@
 				 <br/>
 				 <br/>
 				 <select name="case">
-				 	<option value="0">Base case</option>
-				  	<option value="1">Case A-I</option>
-				  	<option value="2">Case A-II</option>
-				  	<option value="3">Case A-III</option>
-				  	<option value="4">Case B-I</option>
-				  	<option value="5">Case B-II</option>
-				  	<option value="6">Case B-III</option>
-				  	<option value="7">Case C</option>
+				 	<option value="0">0. Base case</option>
+				  	<option value="1">1. Case A-I</option>
+				  	<option value="2">2. Case A-II</option>
+				  	<option value="3">3. Case A-III</option>
+				  	<option value="4">4. Case B-I</option>
+				  	<option value="5">5. Case B-II</option>
+				  	<option value="6">6. Case B-III</option>
+				  	<option value="7">7. Case C</option>
 				</select>
 				<br/>
 				<br/>
@@ -35,7 +35,7 @@
 			if (isset($_POST['case'])) {
 				$case = $_POST['case'];
 				echo '<hr>';
-				echo 'Simulation result:<br/><br/>';
+				echo "Simulation result for case $case:<br/><br/>";
 				echo '<pre>';
 				passthru("./bsu $case");
 				echo '</pre>';
